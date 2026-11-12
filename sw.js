@@ -1,5 +1,5 @@
 /* Коран Карим — service worker */
-const VERSION = 'qk-v1.0.2';
+const VERSION = 'qk-v1.0.3';
 const SHELL = [
   './',
   'index.html',
