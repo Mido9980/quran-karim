@@ -86,9 +86,29 @@
   const view = document.getElementById('view');
   const footer = document.getElementById('footer');
   const toastEl = document.getElementById('toast');
-  const sheetWrap = document.getElementById('sheetWrap');
-  const sheetBody = document.getElementById('sheetBody');
-  const sheetTitle = document.getElementById('sheetTitle');
+  let sheetWrap = null, sheetBody = null, sheetTitle = null;
+
+  function ensureSheet() {
+    if (sheetWrap) return;
+    sheetWrap = document.createElement('div');
+    sheetWrap.className = 'sheet-wrap';
+    sheetWrap.hidden = true;
+    sheetWrap.innerHTML = `
+      <div class="sheet-bg" data-close="1"></div>
+      <div class="sheet" role="dialog" aria-modal="true">
+        <div class="sheet-head">
+          <b id="sheetTitle"></b>
+          <button class="tool" data-close="1" aria-label="close">
+            <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="sheet-body" id="sheetBody"></div>
+      </div>`;
+    document.body.appendChild(sheetWrap);
+    sheetBody = sheetWrap.querySelector('#sheetBody');
+    sheetTitle = sheetWrap.querySelector('#sheetTitle');
+    sheetWrap.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeSheet(); });
+  }
 
   let currentSurah = null;
   let saveTimer = null;
@@ -398,6 +418,7 @@
 
   /* ---------------- sheets ---------------- */
   function openSheet(kind) {
+    ensureSheet();
     applyChrome();
     if (kind === 'tr') {
       sheetTitle.textContent = t('translation');
@@ -488,13 +509,14 @@
   }
 
   function closeSheet() {
-    sheetWrap.hidden = true;
+    if (sheetWrap) {
+      sheetWrap.hidden = true;
+      sheetBody.innerHTML = '';
+    }
     document.body.style.overflow = '';
-    sheetBody.innerHTML = '';
   }
 
-  sheetWrap.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeSheet(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheetWrap.hidden) closeSheet(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheetWrap && !sheetWrap.hidden) closeSheet(); });
 
   /* ---------------- chrome buttons ---------------- */
   document.getElementById('btnTr').addEventListener('click', () => openSheet('tr'));
@@ -528,11 +550,6 @@
   window.addEventListener('hashchange', route);
 
   /* ---------------- start ---------------- */
-  closeSheet();
-  if (getComputedStyle(sheetWrap).display !== 'none') {
-    sheetWrap.style.display = 'none';
-    document.title = 'SHEET-FIXED';
-  }
   applyChrome();
   route();
 
