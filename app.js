@@ -528,6 +528,11 @@
   window.addEventListener('hashchange', route);
 
   /* ---------------- start ---------------- */
+  closeSheet();
+  if (getComputedStyle(sheetWrap).display !== 'none') {
+    sheetWrap.style.display = 'none';
+    document.title = 'SHEET-FIXED';
+  }
   applyChrome();
   route();
 
