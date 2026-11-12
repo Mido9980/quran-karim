@@ -247,7 +247,7 @@
       ar = await loadAr();
       tr = await loadTr(S.tr);
     } catch (e) {
-      view.innerHTML = `<div class="empty">Не удалось загрузить текст. Проверьте соединение и обновите страницу.</div>`;
+      view.innerHTML = `<div class="empty">Не удалось загрузить текст. Проверьте соединение и обновите страницу.<br><small style="opacity:.7">${'${esc(e && e.message ? e.message : e)}'}</small></div>`;
       return;
     }
     if (currentSurah !== n) return;
@@ -519,6 +519,14 @@
   }
 
   window.addEventListener('hashchange', route);
+
+  window.addEventListener('error', (ev) => {
+    const b = document.createElement('div');
+    b.className = 'empty';
+    b.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:999;background:#3a1010;color:#ffd9d9;padding:10px;border-radius:10px;font-size:11px;text-align:left;direction:ltr';
+    b.textContent = 'ERR: ' + (ev.message || ev.error);
+    document.body.appendChild(b);
+  });
 
   /* ---------------- start ---------------- */
   applyChrome();
