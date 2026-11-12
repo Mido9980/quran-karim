@@ -1,5 +1,5 @@
 /* Коран Карим — service worker */
-const VERSION = 'qk-v1.0.0';
+const VERSION = 'qk-v1.0.2';
 const SHELL = [
   './',
   'index.html',
@@ -75,7 +75,11 @@ self.addEventListener('fetch', (e) => {
   e.respondWith((async () => {
     const cache = await caches.open(VERSION);
     const hit = await cache.match(req);
-    return hit || fetch(req).then((res) => {
+    if (hit) {
+      fetch(req).then((res) => { if (res && res.ok) cache.put(req, res.clone()); }).catch(() => {});
+      return hit;
+    }
+    return fetch(req).then((res) => {
       if (res && res.ok) cache.put(req, res.clone());
       return res;
     }).catch(() => Response.error());
