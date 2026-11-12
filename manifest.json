@@ -1,0 +1,19 @@
+{
+  "name": "Коран Карим · القرآن الكريم",
+  "short_name": "Коран Карим",
+  "description": "Полный текст Корана аят за аятом с переводом. Работает офлайн.",
+  "lang": "ru",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07110d",
+  "theme_color": "#07110d",
+  "categories": ["books", "education", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

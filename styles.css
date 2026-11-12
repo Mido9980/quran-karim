@@ -1,0 +1,284 @@
+@font-face{
+  font-family:'AmiriQuran';
+  src:url('fonts/amiri-quran.woff2') format('woff2');
+  font-display:swap;
+}
+@font-face{
+  font-family:'CairoUI';
+  src:url('fonts/cairo.woff2') format('woff2');
+  font-display:swap;
+}
+
+:root{
+  --bg:#07110d;
+  --bg-2:#0a1712;
+  --panel:rgba(255,255,255,.035);
+  --panel-2:rgba(255,255,255,.06);
+  --line:rgba(217,184,106,.16);
+  --line-soft:rgba(255,255,255,.07);
+  --gold:#e2c383;
+  --gold-2:#b9924a;
+  --emerald:#35c08e;
+  --txt:#edf3ef;
+  --muted:#93a69c;
+  --shadow:0 18px 40px rgba(0,0,0,.45);
+  --arf:30px;
+  --trf:16px;
+  --radius:18px;
+}
+
+html[data-theme="light"]{
+  --bg:#f5f1e6;
+  --bg-2:#efeade;
+  --panel:#fffdf7;
+  --panel-2:#fffefb;
+  --line:rgba(154,116,51,.24);
+  --line-soft:rgba(60,45,20,.10);
+  --gold:#9a7433;
+  --gold-2:#7d5c22;
+  --emerald:#0f8a63;
+  --txt:#221d16;
+  --muted:#6d6353;
+  --shadow:0 14px 30px rgba(90,70,30,.14);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:
+    radial-gradient(900px 520px at 85% -10%, rgba(53,192,142,.10), transparent 60%),
+    radial-gradient(700px 420px at 10% 0%, rgba(226,195,131,.09), transparent 55%),
+    var(--bg);
+  color:var(--txt);
+  font-family:'CairoUI',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+html[dir="rtl"] body{font-family:'CairoUI','Segoe UI',Tahoma,sans-serif}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 14px;
+  padding-top:calc(10px + env(safe-area-inset-top));
+  background:rgba(7,17,13,.86);
+  background:color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.mark{position:relative;width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center}
+.mark svg{position:absolute;inset:0;width:100%;height:100%}
+.mark-txt{
+  position:relative;font-family:'AmiriQuran',serif;font-size:20px;line-height:1;
+  color:var(--gold);transform:translateY(1px);
+}
+.brand-txt{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.brand-txt b{font-size:15.5px;font-weight:700;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-txt i{font-size:11.5px;font-style:normal;color:var(--muted);letter-spacing:.5px}
+.tools{display:flex;align-items:center;gap:4px}
+.tool{
+  width:38px;height:38px;display:grid;place-items:center;
+  border:1px solid transparent;border-radius:12px;
+  background:transparent;color:var(--muted);cursor:pointer;
+  transition:.16s ease;
+}
+.tool svg{width:20px;height:20px}
+.tool:hover,.tool:focus-visible{background:var(--panel-2);color:var(--gold);border-color:var(--line);outline:none}
+.tool.on{color:var(--gold);background:var(--panel-2);border-color:var(--line)}
+.tool-lang{font-size:12px;font-weight:700;letter-spacing:.6px;width:40px}
+
+/* ---------- view ---------- */
+.view{max-width:820px;margin:0 auto;padding:16px 14px 90px}
+
+/* hero */
+.hero{padding:12px 4px 18px;text-align:center}
+.hero h1{
+  margin:0 0 6px;font-family:'AmiriQuran',serif;font-size:38px;line-height:1.25;
+  background:linear-gradient(180deg,#f4e2b6,var(--gold-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  direction:rtl;
+}
+.hero p{margin:0;color:var(--muted);font-size:13.5px}
+.search{
+  margin:14px auto 0;max-width:520px;position:relative;
+}
+.search input{
+  width:100%;padding:13px 44px 13px 16px;border-radius:16px;
+  border:1px solid var(--line);background:var(--panel);color:var(--txt);
+  font-size:15px;font-family:inherit;outline:none;transition:.18s;
+}
+html[dir="rtl"] .search input{padding:13px 16px 13px 44px}
+.search input:focus{border-color:var(--gold-2);box-shadow:0 0 0 3px rgba(226,195,131,.10)}
+.search svg{position:absolute;top:50%;transform:translateY(-50%);right:14px;width:18px;height:18px;color:var(--muted)}
+html[dir="rtl"] .search svg{right:auto;left:14px}
+
+/* continue card */
+.resume{
+  display:flex;align-items:center;gap:12px;margin:16px 0 6px;padding:14px 16px;
+  border-radius:var(--radius);border:1px solid var(--line);
+  background:linear-gradient(135deg,rgba(226,195,131,.10),rgba(53,192,142,.07));
+  cursor:pointer;transition:.18s;
+}
+.resume:hover{transform:translateY(-1px);border-color:var(--gold-2)}
+.resume .r-ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(226,195,131,.12);color:var(--gold);flex:0 0 auto}
+.resume .r-ico svg{width:19px;height:19px}
+.resume .r-txt{min-width:0;flex:1}
+.resume .r-txt b{display:block;font-size:14px}
+.resume .r-txt span{font-size:12px;color:var(--muted)}
+
+/* surah list */
+.list-head{display:flex;align-items:baseline;justify-content:space-between;margin:22px 4px 10px}
+.list-head h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.4px;color:var(--muted);text-transform:uppercase}
+.list-head span{font-size:12px;color:var(--muted)}
+.surah-list{display:flex;flex-direction:column;gap:8px}
+.srow{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;
+  border:1px solid var(--line-soft);border-radius:15px;background:var(--panel);
+  transition:.16s;cursor:pointer;
+}
+.srow:hover{border-color:var(--line);background:var(--panel-2);transform:translateY(-1px)}
+.snum{
+  position:relative;width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;
+  font-size:13px;font-weight:700;color:var(--gold);
+}
+.snum svg{position:absolute;inset:0;width:100%;height:100%}
+.snum span{position:relative}
+.srow .sname{flex:1;min-width:0}
+.srow .sname b{display:block;font-size:14.5px;font-weight:600}
+.srow .sname i{display:block;font-style:normal;font-size:11.5px;color:var(--muted);margin-top:1px}
+.srow .sar{font-family:'AmiriQuran',serif;font-size:19px;color:var(--gold);direction:rtl;white-space:nowrap;line-height:1.6}
+.srow .smore{font-size:11px;color:var(--muted);text-align:center;line-height:1.2;flex:0 0 auto}
+.empty{padding:40px 0;text-align:center;color:var(--muted);font-size:14px}
+
+/* ---------- reader ---------- */
+.surah-head{
+  position:relative;margin:6px -14px 14px;padding:18px 18px 16px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(226,195,131,.09),transparent);
+  text-align:center;
+}
+.surah-head .back{
+  position:absolute;top:14px;inset-inline-start:10px;
+  width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  background:var(--panel);border:1px solid var(--line-soft);color:var(--muted);cursor:pointer;
+}
+.surah-head .back svg{width:17px;height:17px}
+html[dir="rtl"] .surah-head .back svg{transform:scaleX(-1)}
+.surah-head .snum-lg{
+  font-family:'AmiriQuran',serif;font-size:30px;line-height:1.3;color:var(--gold);direction:rtl
+}
+.surah-head .smeta{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.3px}
+.surah-head .sru{font-size:13.5px;color:var(--txt);opacity:.85;margin-top:6px;font-weight:600}
+
+.basmala{
+  text-align:center;font-family:'AmiriQuran',serif;font-size:24px;color:var(--gold);
+  direction:rtl;margin:6px 0 18px;line-height:1.9;padding:8px 0;
+}
+.ayah{
+  position:relative;padding:16px 16px 14px;margin-bottom:12px;
+  border:1px solid var(--line-soft);border-radius:var(--radius);
+  background:var(--panel);transition:.15s;
+}
+.ayah:hover{border-color:var(--line)}
+.ayah-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.vnum{
+  min-width:28px;height:28px;padding:0 7px;border-radius:9px;display:grid;place-items:center;
+  font-size:12px;font-weight:700;color:var(--gold);
+  background:rgba(226,195,131,.10);border:1px solid rgba(226,195,131,.22);
+}
+.ayah-acts{display:flex;gap:2px;opacity:.55;transition:.15s}
+.ayah:hover .ayah-acts,.ayah:focus-within .ayah-acts{opacity:1}
+.ayah-acts button{
+  width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:9px;
+  background:transparent;color:var(--muted);cursor:pointer;
+}
+.ayah-acts button:hover{background:var(--panel-2);color:var(--gold)}
+.ayah-acts svg{width:16px;height:16px}
+.ayah .ar{
+  margin:0;direction:rtl;text-align:right;font-family:'AmiriQuran',serif;
+  font-size:var(--arf);line-height:2.05;color:var(--txt);word-spacing:.04em;
+}
+.ayah .tr{
+  margin:11px 0 0;font-size:var(--trf);line-height:1.72;color:var(--muted);
+  padding-top:10px;border-top:1px dashed var(--line-soft);
+}
+.ayah .tr[dir="rtl"]{text-align:right}
+.ayah.no-tr .tr{display:none}
+.ayah.flash{animation:flash 1.2s ease}
+@keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 2px var(--gold-2)}}
+
+.pager{display:flex;gap:10px;margin:18px 0 8px}
+.pager button{
+  flex:1;padding:13px 12px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);color:var(--txt);font-size:13.5px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:.16s;
+}
+.pager button:hover:not(:disabled){background:var(--panel-2);border-color:var(--gold-2)}
+.pager button:disabled{opacity:.35;cursor:default}
+.pager svg{width:15px;height:15px}
+
+/* ---------- footer ---------- */
+.footer{
+  max-width:820px;margin:0 auto;padding:0 14px 34px;
+  color:var(--muted);font-size:11.5px;text-align:center;line-height:1.7;
+}
+.footer b{color:var(--gold-2);font-weight:600}
+
+/* ---------- sheet ---------- */
+.sheet-wrap{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);animation:fade .2s ease}
+.sheet{
+  position:relative;width:100%;max-width:520px;max-height:82vh;overflow:auto;
+  background:var(--bg-2);border:1px solid var(--line);border-bottom:0;
+  border-radius:22px 22px 0 0;padding:16px 18px calc(22px + env(safe-area-inset-bottom));
+  animation:slide .24s cubic-bezier(.2,.9,.25,1);box-shadow:var(--shadow);
+}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes slide{from{transform:translateY(24px);opacity:.6}to{transform:translateY(0);opacity:1}}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sheet-head b{font-size:15px}
+.sheet-body{display:flex;flex-direction:column;gap:6px}
+.opt{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 14px;border-radius:13px;border:1px solid var(--line-soft);
+  background:var(--panel);cursor:pointer;font-size:14px;transition:.15s;
+}
+.opt:hover{background:var(--panel-2);border-color:var(--line)}
+.opt.sel{border-color:var(--gold-2);background:rgba(226,195,131,.09);color:var(--gold);font-weight:600}
+.opt .o-sub{font-size:11.5px;color:var(--muted);margin-top:2px;font-weight:400}
+.opt-lbl{font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:14px 4px 4px;font-weight:700}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{
+  width:34px;height:34px;border-radius:10px;border:1px solid var(--line);
+  background:var(--panel-2);color:var(--txt);font-size:17px;cursor:pointer;line-height:1;
+}
+.stepper span{min-width:34px;text-align:center;font-size:13px;color:var(--muted)}
+.switch{width:44px;height:25px;border-radius:20px;background:var(--panel-2);border:1px solid var(--line);position:relative;transition:.18s;flex:0 0 auto}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:var(--muted);transition:.18s}
+.switch.on{background:rgba(226,195,131,.22);border-color:var(--gold-2)}
+.switch.on::after{left:21px;background:var(--gold)}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translateX(-50%);
+  background:var(--panel-2);color:var(--txt);border:1px solid var(--line);
+  padding:10px 16px;border-radius:12px;font-size:13px;z-index:120;
+  box-shadow:var(--shadow);animation:fade .18s ease;
+}
+html[data-theme="light"] .toast{background:#fffdf7}
+
+@media (max-width:400px){
+  .hero h1{font-size:32px}
+  .brand-txt i{display:none}
+  :root{--arf:26px;--trf:15px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
