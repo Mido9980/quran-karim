@@ -8,7 +8,6 @@ const SHELL = [
   'manifest.json',
   'data/surahs.json',
   'data/ar.json',
-  'data/ru.json',
   'fonts/amiri-quran.woff2',
   'fonts/cairo.woff2',
   'icons/icon-192.png',

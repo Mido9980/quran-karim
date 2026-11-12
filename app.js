@@ -131,6 +131,15 @@
   }
 
   /* ---------------- data ---------------- */
+  function getJSON(url, ms) {
+    const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = ctl ? setTimeout(() => ctl.abort(), ms || 25000) : null;
+    return fetch(url, ctl ? { signal: ctl.signal } : undefined).then((r) => {
+      if (timer) clearTimeout(timer);
+      return r.json();
+    }, (e) => { if (timer) clearTimeout(timer); throw e; });
+  }
+
   async function loadSurahs() {
     if (!S.surahs.length) {
       const r = await fetch('data/surahs.json');
@@ -139,16 +148,12 @@
     return S.surahs;
   }
   async function loadAr() {
-    if (!S.ar) {
-      const r = await fetch('data/ar.json');
-      S.ar = await r.json();
-    }
+    if (!S.ar) S.ar = await getJSON('data/ar.json');
     return S.ar;
   }
   async function loadTr(lang) {
     if (S.trCache[lang]) return S.trCache[lang];
-    const r = await fetch('data/' + lang + '.json');
-    const d = await r.json();
+    const d = await getJSON('data/' + lang + '.json');
     S.trCache[lang] = d;
     return d;
   }
@@ -244,6 +249,7 @@
     view.innerHTML = `<div class="empty">…</div>`;
     let ar, tr;
     try {
+      await loadSurahs();
       ar = await loadAr();
       tr = await loadTr(S.tr);
     } catch (e) {
@@ -251,6 +257,7 @@
       return;
     }
     if (currentSurah !== n) return;
+    const meta2 = surahMeta(n);
     const ayahs = ar[n - 1] || [];
     const trs = tr[n - 1] || [];
     const trLang = TR_LANGS.filter((l) => l.code === S.tr)[0] || TR_LANGS[0];
@@ -260,8 +267,8 @@
         <button class="back" id="back" aria-label="${esc(t('back'))}">
           <svg viewBox="0 0 24 24" fill="none"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="snum-lg">${esc(meta.ar)}</div>
-        <div class="sru">${esc(S.ui === 'ar' ? meta.ru : meta.ru)}</div>
+        <div class="snum-lg">${esc(meta2.ar)}</div>
+        <div class="sru">${esc(meta2.ru)}</div>
         <div class="smeta">${n} · ${ayahs.length} ${esc(t('versesShort'))} · ${esc(t(meta.place))}</div>
       </header>`;
 
@@ -520,17 +527,15 @@
 
   window.addEventListener('hashchange', route);
 
-  window.addEventListener('error', (ev) => {
-    const b = document.createElement('div');
-    b.className = 'empty';
-    b.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:999;background:#3a1010;color:#ffd9d9;padding:10px;border-radius:10px;font-size:11px;text-align:left;direction:ltr';
-    b.textContent = 'ERR: ' + (ev.message || ev.error);
-    document.body.appendChild(b);
-  });
-
   /* ---------------- start ---------------- */
   applyChrome();
   route();
+
+  // warm the cache in the background so the default translation works offline
+  setTimeout(() => {
+    loadTr(S.tr).catch(() => {});
+    if (S.tr !== 'ru') loadTr('ru').catch(() => {});
+  }, 1500);
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
